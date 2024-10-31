@@ -32,7 +32,7 @@ fun PressureGraph(modifier: Modifier = Modifier, width: Float, viewModel: MainVi
     ) {
         viewModel.bloodPressureData.forEach { bloodPressure ->
             Text(
-                text = "Systolic: ${bloodPressure.first}, pulse ${bloodPressure.second}",
+                text = "Systolic: ${bloodPressure.first}, Diastolic ${bloodPressure.second}",
                 color = Color.White
             )
         }

@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Мой доктор</string>
+    <string name="current_month">июля 2024г.</string>
+    <string name="tab_day">День</string>
+    <string name="tab_week">Неделя</string>
+    <string name="tab_month">Месяц</string>
+    <string name="pressure">Давление</string>
+    <string name="pressure_data_period">Сегодня</string>
+    <string name="pressure_no_data">Нет данных</string>
+    <string name="graph_pressure_type_red">Систолическое</string>
+    <string name="graph_pressure_type_yellow">Диастолическое</string>
+    <string name="graph_pressure_add_data">Добавить данные</string>
+    <string name="note">Заметка</string>
+    <string name="note_adding">Опиши свое самочуствие</string>
+    <string name="note_save">Сохранить</string>
+    <string name="notes">Заметки</string>
+    <string name="notes_no_data">Опиши свое состояние</string>
+    <string name="add_data_header">Добавить данные</string>
+    <string name="blood_pressure">Кровянное давление</string>
+
+    <string name="pulse">Пульс</string>
+    <string name="nothing"> </string>
+
+    <string name="date_of_measurement">Дата измерений</string>
+    <string name="time_of_measurement">Время измерений</string>
+
+</resources>

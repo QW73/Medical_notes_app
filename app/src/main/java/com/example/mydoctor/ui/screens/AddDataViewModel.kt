@@ -52,6 +52,17 @@ class AddDataViewModel @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     fun saveData() {
 
+
+        val systolicBP = systolicBloodPressure.toIntOrNull()
+        val diastolicBP = diastolicBloodPressure.toIntOrNull()
+        val pulseValue = pulse.toIntOrNull()
+
+        if (systolicBP == null || diastolicBP == null || pulseValue == null) {
+            errorMessage =
+                "Систолическое, диастолическое давление и пульс должны быть числовыми значениями"
+            return
+        }
+
         if (dateOfMeasurement.isBlank() || timeOfMeasurement.isBlank()) {
             if (dateOfMeasurement.isBlank()) {
                 dateOfMeasurement =
@@ -121,9 +132,9 @@ class AddDataViewModel @Inject constructor(
     }
 
 
-   /* fun deleteData() {
-        viewModelScope.launch {
-            repository.deleteAllData()
-        }
-    }*/
+    /* fun deleteData() {
+         viewModelScope.launch {
+             repository.deleteAllData()
+         }
+     }*/
 }

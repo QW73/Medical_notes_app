@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.mydoctor.data.db.BloodPressureModel
 import com.example.mydoctor.data.repo.MainRepo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -21,7 +22,7 @@ class MainViewModel @Inject constructor(
     private val repository: MainRepo
 ) : ViewModel() {
 
-    var bloodPressureData by mutableStateOf<List<Pair<Int, Int>>>(emptyList())
+    var bloodPressureData by mutableStateOf<List<BloodPressureModel>>(emptyList())
 
     var lastSystolicBloodPressure by mutableStateOf<Int?>(null)
     var lastDiastolicBloodPressure by mutableStateOf<Int?>(null)
@@ -30,20 +31,24 @@ class MainViewModel @Inject constructor(
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getTodayData() {
-        var today = LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+        val today = LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
         viewModelScope.launch {
-            repository.getDataForToday(today).collect { bloodPressureList ->
-                bloodPressureData = bloodPressureList.map {
-                    Pair(it.systolicBloodPressure, it.diastolicBloodPressure)
+            repository.getDataForToday(today).collect { bloodPressure ->
+                bloodPressureData = bloodPressure.map {
+                    BloodPressureModel(
+                        systolicBloodPressure = it.systolicBloodPressure,
+                        diastolicBloodPressure = it.diastolicBloodPressure,
+                        dateOfMeasurement = it.dateOfMeasurement,
+                        timeOfMeasurement = it.timeOfMeasurement,
+                    )
                 }
             }
-        }
 
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun getLastData() {
-        Log.d("MainViewModel", "getLastData called")
         val currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
         val currentTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))
 
@@ -78,9 +83,15 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getDataForPeriod(startDate, endDate).collect { bloodPressure ->
                 bloodPressureData = bloodPressure.map {
-                    Pair(it.systolicBloodPressure, it.diastolicBloodPressure)
+                    BloodPressureModel(
+                        systolicBloodPressure = it.systolicBloodPressure,
+                        diastolicBloodPressure = it.diastolicBloodPressure,
+                        dateOfMeasurement = it.dateOfMeasurement,
+                        timeOfMeasurement = it.timeOfMeasurement,
+                    )
                 }
             }
+
         }
     }
 
@@ -94,12 +105,18 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             repository.getDataForPeriod(startDate, endDate).collect { bloodPressure ->
                 bloodPressureData = bloodPressure.map {
-                    Pair(it.systolicBloodPressure, it.diastolicBloodPressure)
+                    BloodPressureModel(
+                        systolicBloodPressure = it.systolicBloodPressure,
+                        diastolicBloodPressure = it.diastolicBloodPressure,
+                        dateOfMeasurement = it.dateOfMeasurement,
+                        timeOfMeasurement = it.timeOfMeasurement,
+                    )
                 }
             }
 
         }
     }
 }
+
 
 

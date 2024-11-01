@@ -29,10 +29,10 @@ interface HealthDataDao {
     ): Boolean
 
 
-    @Query("SELECT systolicBloodPressure, diastolicBloodPressure FROM health_data WHERE dateOfMeasurement = :currentDate ORDER BY dateOfMeasurement DESC")
+    @Query("SELECT systolicBloodPressure, diastolicBloodPressure, dateOfMeasurement, timeOfMeasurement FROM health_data WHERE dateOfMeasurement = :currentDate ORDER BY dateOfMeasurement DESC")
     fun getPressureDataForToday(currentDate: String): Flow<List<BloodPressureModel>>
 
-    @Query("SELECT systolicBloodPressure, diastolicBloodPressure FROM health_data WHERE dateOfMeasurement >= :startDate AND dateOfMeasurement <= :endDate ORDER BY dateOfMeasurement DESC")
+    @Query("SELECT systolicBloodPressure, diastolicBloodPressure, dateOfMeasurement, timeOfMeasurement FROM health_data WHERE dateOfMeasurement >= :startDate AND dateOfMeasurement <= :endDate ORDER BY dateOfMeasurement DESC")
     fun getPressureDataForPeriod(startDate: String, endDate: String): Flow<List<BloodPressureModel>>
 
     @Query("""

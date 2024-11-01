@@ -52,7 +52,6 @@ class AddDataViewModel @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     fun saveData() {
 
-
         val systolicBP = systolicBloodPressure.toIntOrNull()
         val diastolicBP = diastolicBloodPressure.toIntOrNull()
         val pulseValue = if (pulse.isNotEmpty()) pulse.toIntOrNull() else null
@@ -66,7 +65,6 @@ class AddDataViewModel @Inject constructor(
             errorMessage = "Пульс должен быть числовым значением или оставлен пустым"
             return
         }
-
 
         if (dateOfMeasurement.isBlank() || timeOfMeasurement.isBlank()) {
             if (dateOfMeasurement.isBlank()) {

@@ -4,6 +4,8 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -32,24 +34,66 @@ fun GraphData(
 
     if (viewModel.lastSystolicBloodPressure != null && viewModel.lastDiastolicBloodPressure != null) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(figmaWidthToDp(16f).dp),
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(figmaWidthToDp(8f).dp),
             horizontalAlignment = Alignment.Start
         ) {
-            Text(
-                text = "${viewModel.lastSystolicBloodPressure}/${viewModel.lastDiastolicBloodPressure} pulse ${viewModel.lastPulse}",
-                fontSize = figmaFontSizeToSp(18f),
-                lineHeight = figmaHeightToDp(24f).sp,
-                style = MaterialTheme.typography.bodyLarge,
-                color = MaterialTheme.colorScheme.onTertiary
-            )
-            Text(
-                text = "${viewModel.lastDate}",
-                modifier = modifier.width(width.dp),
-                fontSize = figmaFontSizeToSp(10f),
-                lineHeight = figmaHeightToDp(16f).sp,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onPrimary
-            )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(figmaWidthToDp(8f).dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ){
+                Text(
+                    text =  stringResource(R.string.pressure),
+                    fontSize = figmaFontSizeToSp(12f),
+                    lineHeight = figmaHeightToDp(16f).sp,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
+
+                )
+                Text(
+                    text = "${viewModel.lastSystolicBloodPressure}/${viewModel.lastDiastolicBloodPressure}",
+                    fontSize = figmaFontSizeToSp(18f),
+                    lineHeight = figmaHeightToDp(24f).sp,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onTertiary
+                )
+                Text(
+                    text = stringResource(R.string.pressure_units),
+                    fontSize = figmaFontSizeToSp(12f),
+                    lineHeight = figmaHeightToDp(16f).sp,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
+                )
+            }
+
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(figmaWidthToDp(8f).dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ){
+                Text(
+                    text =  stringResource(R.string.pulse),
+                    fontSize = figmaFontSizeToSp(12f),
+                    lineHeight = figmaHeightToDp(16f).sp,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
+
+                )
+                Text(
+                    text = "${viewModel.lastPulse}",
+                    fontSize = figmaFontSizeToSp(18f),
+                    lineHeight = figmaHeightToDp(24f).sp,
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.onTertiary
+                )
+                Text(
+                    text = stringResource(R.string.pulse_units),
+                    fontSize = figmaFontSizeToSp(12f),
+                    lineHeight = figmaHeightToDp(16f).sp,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.5f)
+                )
+            }
+
         }
 
     } else {

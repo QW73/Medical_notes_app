@@ -16,7 +16,6 @@ val YellowBlur = Color(0xFFFFC122)
 val Black= Color(0xFF000000)
 val MainBlack= Color(0xFF1C1C24)
 
-
 val MainWhite = Color(0xFFFFFFFF)
 
 val WhiteBG = Color(0xFFFAFAFE)

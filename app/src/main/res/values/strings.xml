@@ -5,6 +5,7 @@
     <string name="tab_week">Неделя</string>
     <string name="tab_month">Месяц</string>
     <string name="pressure">Давление</string>
+    <string name="pressure_units">мм рт. ст</string>
     <string name="pressure_data_period">Сегодня</string>
     <string name="pressure_no_data">Нет данных</string>
     <string name="graph_pressure_type_red">Систолическое</string>
@@ -19,6 +20,7 @@
     <string name="blood_pressure">Кровянное давление</string>
 
     <string name="pulse">Пульс</string>
+    <string name="pulse_units">уд/мин</string>
     <string name="nothing"> </string>
 
     <string name="date_of_measurement">Дата измерений</string>

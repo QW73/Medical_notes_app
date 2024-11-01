@@ -55,13 +55,18 @@ class AddDataViewModel @Inject constructor(
 
         val systolicBP = systolicBloodPressure.toIntOrNull()
         val diastolicBP = diastolicBloodPressure.toIntOrNull()
-        val pulseValue = pulse.toIntOrNull()
+        val pulseValue = if (pulse.isNotEmpty()) pulse.toIntOrNull() else null
 
-        if (systolicBP == null || diastolicBP == null || pulseValue == null) {
-            errorMessage =
-                "Систолическое, диастолическое давление и пульс должны быть числовыми значениями"
+        if (systolicBP == null || diastolicBP == null) {
+            errorMessage = "Систолическое и диастолическое давление должны быть числовыми значениями"
             return
         }
+
+        if (pulse.isNotEmpty() && pulseValue == null) {
+            errorMessage = "Пульс должен быть числовым значением или оставлен пустым"
+            return
+        }
+
 
         if (dateOfMeasurement.isBlank() || timeOfMeasurement.isBlank()) {
             if (dateOfMeasurement.isBlank()) {

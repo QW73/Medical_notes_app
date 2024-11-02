@@ -5,6 +5,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDate
 
 @Dao
 interface HealthDataDao {
@@ -23,25 +24,36 @@ interface HealthDataDao {
         systolicBloodPressure: Int,
         diastolicBloodPressure: Int,
         pulse: Int,
-        date: String,
+        date: LocalDate,
         time: String,
         note: String?,
     ): Boolean
 
 
     @Query("SELECT systolicBloodPressure, diastolicBloodPressure, dateOfMeasurement, timeOfMeasurement FROM health_data WHERE dateOfMeasurement = :currentDate ORDER BY dateOfMeasurement DESC")
-    fun getPressureDataForToday(currentDate: String): Flow<List<BloodPressureModel>>
+    fun getPressureDataForToday(currentDate: LocalDate): Flow<List<BloodPressureModel>>
 
-    @Query("SELECT systolicBloodPressure, diastolicBloodPressure, dateOfMeasurement, timeOfMeasurement FROM health_data WHERE dateOfMeasurement >= :startDate AND dateOfMeasurement <= :endDate ORDER BY dateOfMeasurement DESC")
-    fun getPressureDataForPeriod(startDate: String, endDate: String): Flow<List<BloodPressureModel>>
+    @Query(
+        """
+    SELECT systolicBloodPressure, diastolicBloodPressure, dateOfMeasurement, timeOfMeasurement
+    FROM health_data
+    WHERE dateOfMeasurement BETWEEN :startDate AND :endDate
+    ORDER BY dateOfMeasurement DESC
+"""
+    )
+    fun getPressureDataForPeriod(startDate: LocalDate, endDate: LocalDate): Flow<List<BloodPressureModel>>
 
-    @Query("""
+    @Query(
+        """
     SELECT * FROM health_data 
     WHERE dateOfMeasurement <= :currentDate 
     AND timeOfMeasurement <= :currentTime
     ORDER BY dateOfMeasurement DESC , timeOfMeasurement DESC  
     LIMIT 1
-""")    suspend fun getLastHealthData(currentDate: String, currentTime: String): HealthDataModel?}
+"""
+    )
+    suspend fun getLastHealthData(currentDate: LocalDate, currentTime: String): HealthDataModel?
+}
 
 
 

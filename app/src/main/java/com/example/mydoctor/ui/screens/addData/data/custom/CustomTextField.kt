@@ -39,7 +39,11 @@ fun CustomTextField(
     ) {
         BasicTextField(
             value = value,
-            onValueChange = { newValue -> onValueChange(newValue) },
+            onValueChange = { newValue ->
+                if (newValue.all { it.isDigit() } || newValue.isEmpty()) {
+                    onValueChange(newValue)
+                }
+            },
             textStyle = TextStyle(
                 color = MaterialTheme.colorScheme.onPrimary,
                 fontSize = figmaFontSizeToSp(18f),
@@ -59,7 +63,6 @@ fun CustomTextField(
                 innerTextField()
             },
             singleLine = true,
-
-            )
+        )
     }
 }

@@ -3,6 +3,7 @@ package com.example.mydoctor.data.repo
 import com.example.mydoctor.data.db.BloodPressureModel
 import com.example.mydoctor.data.db.HealthDataModel
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDate
 
 interface MainRepo {
 
@@ -13,13 +14,14 @@ interface MainRepo {
         systolicBloodPressure: Int,
         diastolicBloodPressure: Int,
         pulse: Int,
-        date: String,
+        date: LocalDate,
         time: String,
         note: String?,
     ): Boolean
 
-    suspend fun getDataForToday(currentDate: String): Flow<List<BloodPressureModel>>
-    suspend fun getDataForPeriod(startDate: String, endDate: String): Flow<List<BloodPressureModel>>
+    suspend fun getDataForToday(currentDate: LocalDate): Flow<List<BloodPressureModel>>
+    suspend fun getDataForPeriod(startDate: LocalDate, endDate: LocalDate): Flow<List<BloodPressureModel>>
 
-    suspend fun getLastHealthData(currentDate: String, currentTime: String): HealthDataModel?
+    suspend fun getLastHealthData(currentDate: LocalDate, currentTime: String): HealthDataModel?
+
 }

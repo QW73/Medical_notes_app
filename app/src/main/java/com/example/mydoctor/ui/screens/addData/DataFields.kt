@@ -1,5 +1,7 @@
 package com.example.mydoctor.ui.screens.addData
 
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,7 +17,10 @@ import com.example.mydoctor.ui.screens.addData.data.FieldType
 import com.example.mydoctor.ui.screens.addData.data.Section
 import com.example.mydoctor.ui.util.ScreenMetrics.figmaHeightToDp
 import com.example.mydoctor.ui.util.ScreenMetrics.figmaWidthToDp
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun DataFields(modifier: Modifier = Modifier, viewModel: AddDataViewModel) {
 
@@ -28,35 +33,27 @@ fun DataFields(modifier: Modifier = Modifier, viewModel: AddDataViewModel) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(figmaWidthToDp(24f).dp),
         ) {
-            Section(
-                title = stringResource(R.string.blood_pressure), fields = listOf(
-                    FieldData(
-                        label = stringResource(R.string.graph_pressure_type_red),
-                        hint = "120",
-                        fieldType = FieldType.Text,
-                        value = viewModel.systolicBloodPressure,
-                        onValueChange = {
-                            viewModel.systolicBloodPressure = it
-                            viewModel.isDataSaved = false
-                        }
-                    ), FieldData(
-                        label = stringResource(R.string.graph_pressure_type_yellow),
-                        hint = "90",
-                        fieldType = FieldType.Text,
-                        value = viewModel.diastolicBloodPressure,
-                        onValueChange = {
-                            viewModel.diastolicBloodPressure = it
-                            viewModel.isDataSaved = false
-                        }
-                    )
-                ),
-                modifier = Modifier.weight(2f)
-            )
+            Section(title = stringResource(R.string.blood_pressure),
+                fields = listOf(FieldData(label = stringResource(R.string.graph_pressure_type_red),
+                    hint = "120",
+                    fieldType = FieldType.Text,
+                    value = viewModel.systolicBloodPressure,
+                    onValueChange = {
+                        viewModel.systolicBloodPressure = it
+                        viewModel.isDataSaved = false
+                    }), FieldData(label = stringResource(R.string.graph_pressure_type_yellow),
+                    hint = "90",
+                    fieldType = FieldType.Text,
+                    value = viewModel.diastolicBloodPressure,
+                    onValueChange = {
+                        viewModel.diastolicBloodPressure = it
+                        viewModel.isDataSaved = false
+                    })),
+                modifier = Modifier.weight(2f))
             Section(
                 title = stringResource(R.string.pulse),
                 fields = listOf(
-                    FieldData(
-                        label = stringResource(R.string.nothing),
+                    FieldData(label = stringResource(R.string.nothing),
                         hint = "70",
                         value = viewModel.pulse,
                         fieldType = FieldType.Text,
@@ -74,33 +71,29 @@ fun DataFields(modifier: Modifier = Modifier, viewModel: AddDataViewModel) {
             horizontalArrangement = Arrangement.spacedBy(figmaWidthToDp(24f).dp),
         ) {
             Section(
-                title = stringResource(R.string.date_of_measurement),
-                fields = listOf(
-                    FieldData(
-                        hint = "27.06.2024",
+                title = stringResource(R.string.date_of_measurement), fields = listOf(
+                    FieldData(hint = "27.06.2024",
                         fieldType = FieldType.Date,
-                        value = viewModel.dateOfMeasurement,
+                        value = viewModel.dateOfMeasurement?.format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+                            ?: "",
                         onValueChange = {
-                            viewModel.dateOfMeasurement = it
+                            viewModel.dateOfMeasurement =
+                                LocalDate.parse(it, DateTimeFormatter.ofPattern("dd.MM.yyyy"))
                             viewModel.isDataSaved = false
                         })
-                ),
-                modifier = Modifier.weight(1f)
+                ), modifier = Modifier.weight(1f)
 
             )
             Section(
-                title = stringResource(R.string.time_of_measurement),
-                fields = listOf(
-                    FieldData(
-                        hint = "17:00",
+                title = stringResource(R.string.time_of_measurement), fields = listOf(
+                    FieldData(hint = "17:00",
                         value = viewModel.timeOfMeasurement,
                         fieldType = FieldType.Time,
                         onValueChange = {
                             viewModel.timeOfMeasurement = it
                             viewModel.isDataSaved = false
                         }),
-                ),
-                modifier = Modifier.weight(1f)
+                ), modifier = Modifier.weight(1f)
             )
         }
 
@@ -109,18 +102,15 @@ fun DataFields(modifier: Modifier = Modifier, viewModel: AddDataViewModel) {
             horizontalArrangement = Arrangement.spacedBy(figmaWidthToDp(24f).dp),
         ) {
             Section(
-                title = stringResource(R.string.note),
-                fields = listOf(
-                    FieldData(
-                        hint = stringResource(R.string.note_adding),
+                title = stringResource(R.string.note), fields = listOf(
+                    FieldData(hint = stringResource(R.string.note_adding),
                         value = viewModel.note,
                         fieldType = FieldType.Text,
                         onValueChange = {
                             viewModel.note = it
                             viewModel.isDataSaved = false
                         }),
-                ),
-                modifier = Modifier.weight(1f)
+                ), modifier = Modifier.weight(1f)
             )
 
         }

@@ -4,6 +4,7 @@ import com.example.mydoctor.data.db.BloodPressureModel
 import com.example.mydoctor.data.db.HealthDB
 import com.example.mydoctor.data.db.HealthDataModel
 import kotlinx.coroutines.flow.Flow
+import java.time.LocalDate
 import javax.inject.Inject
 
 class RepoImpl @Inject constructor(
@@ -28,7 +29,7 @@ class RepoImpl @Inject constructor(
         systolicBloodPressure: Int,
         diastolicBloodPressure: Int,
         pulse: Int,
-        date: String,
+        date: LocalDate,
         time: String,
         note: String?
     ): Boolean {
@@ -36,17 +37,19 @@ class RepoImpl @Inject constructor(
             .isExist(systolicBloodPressure, diastolicBloodPressure, pulse, date, time, note)
     }
 
-    override suspend fun getDataForToday(currentDate: String): Flow<List<BloodPressureModel>> {
+    override suspend fun getDataForToday(currentDate: LocalDate): Flow<List<BloodPressureModel>> {
         return database.healthDataDao().getPressureDataForToday(currentDate)
     }
 
     override suspend fun getDataForPeriod(
-        startDate: String, endDate: String
+        startDate: LocalDate, endDate: LocalDate
     ): Flow<List<BloodPressureModel>> {
         return database.healthDataDao().getPressureDataForPeriod(startDate, endDate)
     }
 
-    override suspend fun getLastHealthData(currentDate: String, currentTime: String): HealthDataModel? {
+    override suspend fun getLastHealthData(
+        currentDate: LocalDate, currentTime: String
+    ): HealthDataModel? {
         return database.healthDataDao().getLastHealthData(currentDate, currentTime)
     }
 

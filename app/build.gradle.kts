@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    alias(libs.plugins.compose.compiler)
     id("com.google.devtools.ksp")
     id("org.jetbrains.kotlin.kapt")
     id("com.google.dagger.hilt.android")
@@ -24,6 +25,7 @@ android {
         }
     }
 
+
     buildTypes {
         release {
             isMinifyEnabled = false
@@ -41,9 +43,6 @@ android {
     }
     buildFeatures {
         compose = true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.1"
     }
     packaging {
         resources {
@@ -84,9 +83,6 @@ dependencies {
     // Dagger Hilt
     implementation("com.google.dagger:hilt-android:2.51.1")
     implementation ("androidx.hilt:hilt-navigation-compose:1.0.0")
-   // implementation(libs.hilt.android)
-   //implementation (libs.androidx.hilt.navigation.compose)
     kapt("com.google.dagger:hilt-android-compiler:2.51.1")
 
-    //ksp(libs.hilt.compiler)
 }

@@ -1,25 +1,25 @@
 package com.example.mydoctor.data.db
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.room.TypeConverter
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+
 class Converters {
-   /* private val moshi = Moshi.Builder()
-        .add(KotlinJsonAdapterFactory())
-        .build()
 
-    private val dayWeatherType =
-        Types.newParameterizedType(List::class.java, DayWeather::class.java)
-    private val dayWeatherListAdapter = moshi.adapter<List<DayWeather>>(dayWeatherType)
+    @RequiresApi(Build.VERSION_CODES.O)
+    private val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @TypeConverter
-    fun stringToDayWeatherList(value: String): List<DayWeather>? =
-        dayWeatherListAdapter.fromJson(value)
+    fun fromLocalDate(date: LocalDate?): String? {
+        return date?.format(formatter)
+    }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @TypeConverter
-    fun dayWeatherListToString(dayWeatherList: List<DayWeather>): String =
-        dayWeatherListAdapter.toJson(dayWeatherList)
-
-
-
-        Пока думаю нужны ли они
-        */
-
+    fun toLocalDate(dateString: String?): LocalDate? {
+        return dateString?.let { LocalDate.parse(it, formatter) }
+    }
 }

@@ -22,16 +22,25 @@ class MainViewModel @Inject constructor(
     private val repository: MainRepo
 ) : ViewModel() {
 
+    /** Данные артериального давления за выбранный период. */
     var bloodPressureData by mutableStateOf<List<BloodPressureModel>>(emptyList())
 
+    /** Последние добавленные значения измерений. */
     var lastSystolicBloodPressure by mutableStateOf<Int?>(null)
     var lastDiastolicBloodPressure by mutableStateOf<Int?>(null)
     var lastPulse by mutableStateOf<Int?>(null)
     var lastDate by mutableStateOf<String?>(null)
 
+
+    /**
+     * Получает данные давления, записанные сегодня, используя текущую дату для запроса.
+     *
+     * Обновляет "bloodPressureData".
+     */
+
     @RequiresApi(Build.VERSION_CODES.O)
     fun getTodayData() {
-        val today = LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+        val today = LocalDate.now()
         viewModelScope.launch {
             repository.getDataForToday(today).collect { bloodPressure ->
                 bloodPressureData = bloodPressure.map {
@@ -47,20 +56,28 @@ class MainViewModel @Inject constructor(
         }
     }
 
+
+    /**
+     * Получает последние данные давления, используя текущую дату и время.
+     *
+     * Сохраняет полученные значения в переменные "lastSystolicBloodPressure",
+     * "lastDiastolicBloodPressure", "lastPulse" и "lastDate".
+     *
+     * При возникновении ошибки логирует её.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     fun getLastData() {
-        val currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+        val currentDate = LocalDate.now()
         val currentTime = LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm"))
 
         viewModelScope.launch {
             try {
                 val lastHealthData = repository.getLastHealthData(currentDate, currentTime)
-
                 lastHealthData?.let {
                     lastSystolicBloodPressure = it.systolicBloodPressure
                     lastDiastolicBloodPressure = it.diastolicBloodPressure
                     lastPulse = it.pulse
-                    lastDate = it.dateOfMeasurement
+                    lastDate = it.dateOfMeasurement.toString()
                 } ?: run {
                     lastSystolicBloodPressure = null
                     lastDiastolicBloodPressure = null
@@ -73,15 +90,20 @@ class MainViewModel @Inject constructor(
         }
     }
 
-
+    /**
+     * Получает данные давления за последние 7 дней и обновляет "bloodPressureData".
+     *
+     * Использует текущую дату и дату за 7 дней назад для запроса данных.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     fun getWeekData() {
-        val endDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
-        val startDate =
-            LocalDate.now().minusDays(7).format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+        val endDate = LocalDate.now()
+        val startDate = LocalDate.now().minusDays(7)
+        Log.d("getWeekData", "Fetching data from $startDate to $endDate")
 
         viewModelScope.launch {
             repository.getDataForPeriod(startDate, endDate).collect { bloodPressure ->
+                Log.d("getWeekData", "Received ${bloodPressure.size} entries")
                 bloodPressureData = bloodPressure.map {
                     BloodPressureModel(
                         systolicBloodPressure = it.systolicBloodPressure,
@@ -95,15 +117,19 @@ class MainViewModel @Inject constructor(
         }
     }
 
-
+    /**
+     * Получает данные давления за последний месяц и обновляет "bloodPressureData".
+     *
+     * Использует текущую дату и первую дату прошлого месяца для запроса данных.
+     */
     @RequiresApi(Build.VERSION_CODES.O)
     fun getMonthData() {
-        val endDate = LocalDate.now().format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
+        val endDate = LocalDate.now()
         val startDate = LocalDate.now().minusMonths(1).withDayOfMonth(1)
-            .format(DateTimeFormatter.ofPattern("dd.MM.yyyy"))
 
         viewModelScope.launch {
             repository.getDataForPeriod(startDate, endDate).collect { bloodPressure ->
+                Log.d("getMonthData", "Received ${bloodPressure.size} entries")
                 bloodPressureData = bloodPressure.map {
                     BloodPressureModel(
                         systolicBloodPressure = it.systolicBloodPressure,
